@@ -1,0 +1,65 @@
+
+
+```
+type student struct {
+    name string
+    age  int
+}
+
+func (s *student) update() {
+    s.name = "unknown"
+    s.age = 0
+}
+
+func main() {
+    s := student{"hongseok", 13}
+    fmt.Println(s)
+
+    s.update()
+    fmt.Println(s)
+}
+
+
+func (s *student) update() {
+    s = &student{"unknown", 0}
+}
+```
+
+
+```
+package main
+
+func main() {
+    // a simple variable
+    role := "Admin"
+
+    // get the memory address of the `role` variable
+    roleMemAddr := &role
+
+    // assign the value of `Employee` to the `role` variable
+    // using the `roleMemAddr` pointer variable and dereferencing
+    // it using the `*` symbol to assign the new value
+    *roleMemAddr = "Employee"
+}
+
+
+package main
+
+import "fmt"
+
+func main() {
+    // a simple variable
+    role := "Admin"
+
+    // get the memory address of the `role` variable
+    roleMemAddr := &role
+
+    // assign the value of `Employee` to the `role` variable
+    // using the `roleMemAddr` pointer variable and dereferencing
+    // it using the `*` symbol to assign the new value
+    *roleMemAddr = "Employee"
+
+    // log the value of `role` variable to console
+    fmt.Println(role) // Employee ✅
+}
+```
