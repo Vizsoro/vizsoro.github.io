@@ -22,7 +22,7 @@ func (s student) update() {
 func main() {
     s := student{"J. Doe"}
     s.update()
-    fmt.Println(s)
+    fmt.Println(s.name)
 }
 ```
 
@@ -32,30 +32,30 @@ What does this print when executed?
 1. "J. Doe"
 2. "unknown"
 3. Nothing, this program has a compile error.
-4. Nothing, this program has a runtime program.
+4. Nothing, this program has a runtime error.
 
-<details>
+<details >
 <summary>Solution</summary>
 1
 </details>
 
-<details>
+<details markdown="1">
 <summary>Explanation</summary>
 
-The function receiver of `update` has the type of `student` (it is not a pointer value) and also `s` has the of `student`. When the `update`` function is executed, it uses the copy of the value it was invoked on. So it modifies the copy and original value remains unchanged.
+The function receiver of `update` has the type of `student` and also `s` has the of type of `student` (not a pointer value). When the `update` function is executed, it uses the copy of the value it was invoked on. So it modifies the copy and original value remains unchanged.
 </details>
 
 
 ## Puzzle 2
 
-What will the program pint if we change the `update` function to `func (s *student) update()`?
+What will the program print if we change the `update` function to `func (s *student) update()`?
 
 1. "J. Doe"
 2. "unknown"
 3. Nothing, this program has a compile error.
 4. Nothing, this program has a runtime program.
 
-<details>
+<details markdown="1">
 <summary>Solution</summary>
 2
 </details>
@@ -66,51 +66,28 @@ What will the program pint if we change the `update` function to `func (s *stude
 Maybe the answer was obvious but there is a subtle detail here. The `s` in line 24 is still has the `student` type and it is not a pointer. So why the program didn't fail with a compilation error, since we were using a non-pointer type where the function is expecting `*student` (a pointer type)? It's a built in mechanism in the Go compiler:
 > If x is addressable and &x's method set contains m, x.m() is shorthand for (&x).m().
 
+[Source](https://go.dev/ref/spec#Calls)
 
+To translate the English to English: if the function is defined on the pointer type of the receiver and it is possible to convert the non-pointer receiver to a pointer receiver (with the `&` operator), the compiler will automatically do this for you.
 </details>
 
+## Puzzle 3
 
-```
-func (s *student) update() {
-    s = &student{"unknown", 0}
-}
+Let's go back to the original program and now change line 16 to this: `fmt.Println(&s.name)`. What will this print?
 
-```
+1. "J. Doe"
+2. "unknown"
+3. A memory address.
+4. Nothing, this program has a compile error.
 
-```
-package main
+<details markdown="1">
+<summary>Solution</summary>
+3
+</details>
 
-func main() {
-    // a simple variable
-    role := "Admin"
+<details markdown="1">
+<summary>Explanation</summary>
 
-    // get the memory address of the `role` variable
-    roleMemAddr := &role
-
-    // assign the value of `Employee` to the `role` variable
-    // using the `roleMemAddr` pointer variable and dereferencing
-    // it using the `*` symbol to assign the new value
-    *roleMemAddr = "Employee"
-}
-
-
-package main
-
-import "fmt"
-
-func main() {
-    // a simple variable
-    role := "Admin"
-
-    // get the memory address of the `role` variable
-    roleMemAddr := &role
-
-    // assign the value of `Employee` to the `role` variable
-    // using the `roleMemAddr` pointer variable and dereferencing
-    // it using the `*` symbol to assign the new value
-    *roleMemAddr = "Employee"
-
-    // log the value of `role` variable to console
-    fmt.Println(role) // Employee ✅
-}
-```
+My naive 2 cent when I started with Go was option 4, since the `&` converts `s` to a pointer type and only the non-pointer type `student` has the `update` method. I was wrong on many levels. 
+The first thing here is operator precedence. The `.name` is executed first, than the `&` so this example will print the memory address of the `name` string.
+</details>
