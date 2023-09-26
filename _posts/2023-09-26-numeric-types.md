@@ -116,9 +116,15 @@ Unlike C, Go <b>does not have automatic conversion between numeric types</b>. It
 
 >The convenience of automatic conversion between numeric types in C is outweighed by the confusion it causes. When is an expression unsigned? How big is the value? Does it overflow? Is the result portable, independent of the machine on which it executes? It also complicates the compiler;
 
-[Source](https://go.dev/doc/faq#conversions)
+[Source - Conversions](https://go.dev/doc/faq#conversions)
 
 To make this work we need explicit type conversion, e.g. `c := float64(a) / b`.
+
+At this point you might wonder how the hack the `5 / 9.0` worked in the example above. That's a tricky thing. In this case `5` and `9.0` literals are untyped constants (with underlying default types: `int` and `float64` respectively). 
+
+>On the other hand, an untyped constant does not carry a Go type in the same way and can be mixed and matched more freely. It does, however, have a default type that is exposed when, and only when, no other type information is available.
+
+[Source - Constants](https://go.dev/blog/constants)
 </details>
 
 
