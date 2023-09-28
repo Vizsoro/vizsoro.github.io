@@ -1,6 +1,6 @@
 ---
 title: Type alias in action
-date: 2023-09-27 18:33:10 -0
+date: 2023-09-28 18:33:10 -0
 categories: [go,puzzle]
 tags: [go,type,alias,puzzle]
 ---
